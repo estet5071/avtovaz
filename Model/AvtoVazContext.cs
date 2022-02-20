@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Model.Entities;
+using System;
 using System.Configuration;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Model
 {
@@ -20,9 +23,21 @@ namespace Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                 optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString).UseLazyLoadingProxies();
+                 optionsBuilder.UseSqlServer(GetConnectionString()).UseLazyLoadingProxies();
 
             }
+        }
+
+        private string GetConnectionString()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+            if (!connectionString.Contains("%CONTENTROOTPATH%"))
+                return connectionString;
+
+            string solutionPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+            return connectionString.Replace("%CONTENTROOTPATH%", solutionPath);
+            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
