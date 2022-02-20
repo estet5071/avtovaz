@@ -1,0 +1,1 @@
+Для входа с доступом ко всем разделам введите логин "admin" и пароль "admin". При желании файл AppData\AvtoVaz.bak можно восстановить в Microsoft SQL Server Management Studio, после чего поменять строку подключения в файле UI\App.config.
